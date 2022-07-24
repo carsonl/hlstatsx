@@ -69,9 +69,9 @@ header('Content-Type: text/html; charset=utf-8');
 
 // Check PHP configuration
 
-if (version_compare(phpversion(), "6.0", "<"))
+if (version_compare(phpversion(), "4.1.0", "<"))
 {
-	error("HLstatsX:CE2 requires PHP version 6.0 or newer (you are running PHP version " . phpversion() . ").");
+	error("HLstats requires PHP version 4.1.0 or newer (you are running PHP version " . phpversion() . ").");
 }
 
 // do not report NOTICE warnings

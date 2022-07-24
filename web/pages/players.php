@@ -161,7 +161,7 @@ For support and installation notes visit http://www.hlxcommunity.com
 					(
 						'activity',
 						'Activity',
-						'width=10&sort=no&type=bargraph'
+						'width=16&sort=no&type=bargraph'
 					),
 					new TableColumn
 					(
@@ -196,15 +196,15 @@ For support and installation notes visit http://www.hlxcommunity.com
 					new TableColumn
 					(
 						'hpk',
-						'HS:K',
+						'Kills Per Minute',
 						'width=6&align=right'
-					),
-					new TableColumn
-					(
-						'acc',
-						'Accuracy',
-						'width=6&align=right&append=' . urlencode('%')
 					)
+					// new TableColumn
+					// (
+					// 	'acc',
+					// 	'Accuracy',
+					// 	'width=6&align=right&append=' . urlencode('%')
+					// )
 				),
 				'playerId',
 				$g_options['rankingtype'],
@@ -228,7 +228,7 @@ For support and installation notes visit http://www.hlxcommunity.com
 					(
 						'activity',
 						'Activity',
-						'width=10&sort=no&type=bargraph'
+						'width=16&sort=no&type=bargraph'
 						),
 					new TableColumn
 					(
@@ -257,15 +257,15 @@ For support and installation notes visit http://www.hlxcommunity.com
 					new TableColumn
 					(
 						'hpk',
-						'HS:K',
+						'Kills Per Minute',
 						'width=6&align=right'
 					),
-					new TableColumn
-					(
-						'acc',
-						'Accuracy',
-						'width=6&align=right&append=' . urlencode('%')
-					),
+					// new TableColumn
+					// (
+					// 	'acc',
+					// 	'Accuracy',
+					// 	'width=6&align=right&append=' . urlencode('%')
+					// ),
 					new TableColumn
 					(
 						'skill',
@@ -285,7 +285,7 @@ For support and installation notes visit http://www.hlxcommunity.com
 			true
 			);
 		}
-		if ($rank_type == "0")
+		if ($rank_type == "0") //ROUND(hlstats_Players.headshots/(IF(hlstats_Players.kills=0, 1, hlstats_Players.kills)), 2) AS hpk,
 		{
 			$result = $db->query
 			("
@@ -302,7 +302,7 @@ For support and installation notes visit http://www.hlxcommunity.com
 					hlstats_Players.last_skill_change,
 					ROUND(hlstats_Players.kills/(IF(hlstats_Players.deaths=0, 1, hlstats_Players.deaths)), 2) AS kpd,
 					hlstats_Players.headshots,
-					ROUND(hlstats_Players.headshots/(IF(hlstats_Players.kills=0, 1, hlstats_Players.kills)), 2) AS hpk,
+					ROUND(hlstats_Players.kills/(hlstats_Players.connection_time/60), 2) AS hpk,
 					IFNULL(ROUND((hlstats_Players.hits / hlstats_Players.shots * 100), 1), 0) AS acc,
 					activity
 				FROM
@@ -357,7 +357,7 @@ For support and installation notes visit http://www.hlxcommunity.com
 					SUM(hlstats_Players_History.deaths) AS deaths,
 					ROUND(SUM(hlstats_Players_History.kills) / IF(SUM(hlstats_Players_History.deaths) = 0, 1, SUM(hlstats_Players_History.deaths)), 2) AS kpd,
 					SUM(hlstats_Players_History.headshots) AS headshots,
-					ROUND(SUM(hlstats_Players_History.headshots) / SUM(hlstats_Players_History.kills), 2) AS hpk,
+					ROUND(SUM(hlstats_Players_History.kills) / (connection_time / 60), 2) AS hpk,
 					IFNULL(ROUND((SUM(hlstats_Players_History.hits) / SUM(hlstats_Players_History.shots) * 100), 1), 0) AS acc,
 					activity
 				FROM

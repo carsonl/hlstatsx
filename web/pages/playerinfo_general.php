@@ -46,7 +46,7 @@ For support and installation notes visit http://www.hlxcommunity.com
 	<div class="subblock">
 		<div style="float:left;vertical-align:top;width:48.5%;">
 			<table class="data-table">
-				<tr class="data-table-head">
+			<tr class="data-table-head">
 					<td style="vertical-align:top;">Player Profile<br /><br /></td>
 					<td style="text-align:center; vertical-align:middle;" rowspan="7" id="player_avatar">
 						<?php
@@ -61,50 +61,32 @@ For support and installation notes visit http://www.hlxcommunity.com
 									hlstats_PlayerUniqueIds.playerId = '$player'
 							");
 							list($uqid, $coid) = $db->fetch_row();
-							function fetchpage($page)
-							{
-								$domain="steamcommunity.com";
-								$indata="";
-						//		$data=file_get_contents($page);
-								$fsock=fsockopen($domain, 80, $errno, $errstr,2);
-								if(!$fsock)
-								{
-									echo "Error: $errstr";
-								}
-								else
-								{
-									$request=sprintf("GET %s HTTP/1.1\r\nHost: %s\r\nConnection: Close\r\n\r\n",$page,$domain);
-									fwrite($fsock, $request);
-									while(!feof($fsock))
-									{
-										$indata.=fgets($fsock,1024);
-									}
-									fclose($fsock);
-									return $indata;
-								}
+						
+							$status = 'Unknown';
+							$avatar_full = IMAGE_PATH."/unknown.jpg";
+						
+							if ($coid !== '76561197960265728') {
+
+								$profileUrl = "https://steamcommunity.com/profiles/$coid?xml=1";
+		
+								$curl = curl_init();
+								curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1 );
+								curl_setopt($curl, CURLOPT_URL, $profileUrl);
+
+								$xml = curl_exec($curl);
+								curl_close($curl);
 							}
-							$page = "/profiles/$coid?xml=1";
-							$pagedata=fetchpage($page);
-							if( preg_match('/Location: (.*)/', $pagedata, $location) )
-							{
-								$page = trim($location[1]) . "?xml=1";
-								$pagedata = fetchpage($page);
+							
+							$xmlDoc = null;
+							if ($xml) {
+								$xmlDoc = simplexml_load_string($xml);
 							}
-							preg_match('/<onlineState>(.*?)<\/onlineState>/', $pagedata, $results);
-							preg_match('/<avatarFull><!\[CDATA\[(.*?)\]\]><\/avatarFull>/', $pagedata, $results2);
-							$status = ucwords($results[1]);
-							$avatar_full = $results2[1];
-							$avimg = getImage("/avatars/$player");
-							if ($avimg)
-							{
-								$avatar_full = $avimg['url'];
+						
+							if ($xmlDoc) {
+								$status = ucwords($xmlDoc->onlineState);
+								$avatar_full = $xmlDoc->avatarFull;
 							}
-							else if ($avatar_full == '' || $playerdata['blockavatar'] == '1')
-							{
-								$avatar_full = IMAGE_PATH."/unknown.jpg";
-							}
-							if ($status == '')
-								$status = '(Unknown)';
+						
 							echo("<img src=\"$avatar_full\" style=\"height:158px;width:158px;\" alt=\"Steam Community Avatar\" />");
 						?>
 					</td>
@@ -123,9 +105,9 @@ For support and installation notes visit http://www.hlxcommunity.com
 							if ($playerdata['country'])
 							{
 								echo 'Location: ';
-								if ($playerdata['city']) {
-									echo htmlspecialchars($playerdata['city'], ENT_COMPAT) . ', ';
-								}
+								//if ($playerdata['city']) {
+								//	echo htmlspecialchars($playerdata['city'], ENT_COMPAT) . ', ';
+								//}
 								echo '<a href="'.$g_options['scripturl'].'?mode=countryclansinfo&amp;flag='.$playerdata['flag']."&amp;game=$game\">" . $playerdata['country'] . '</a>';
 							}
 							else
@@ -206,7 +188,7 @@ For support and installation notes visit http://www.hlxcommunity.com
 						?>
 					</td>
 				</tr>
-				<tr class="bg2">
+				<tr class="bg1">
 					<td>Last Connect:*</td>
 					<td>
 						<?php
@@ -231,35 +213,13 @@ For support and installation notes visit http://www.hlxcommunity.com
 						?>
 					</td>
 				</tr>
-				<tr class="bg1">
+				<tr class="bg2">
 					<td>Total Connection Time:</td>
 					<td>
 						<?php echo timestamp_to_str($playerdata['connection_time']); ?>
 					</td>
 				</tr>
 				<tr class="bg2">
-					<td>Average Ping:*</td>
-					<td>
-						<?php
-							$db->query
-							("
-								SELECT
-									ROUND(SUM(hlstats_Events_Latency.ping) / COUNT(hlstats_Events_Latency.ping), 0) AS av_ping,
-									ROUND(ROUND(SUM(hlstats_Events_Latency.ping) / COUNT(ping), 0) / 2, 0) AS av_latency
-								FROM
-									hlstats_Events_Latency
-								WHERE 
-									hlstats_Events_Latency.playerId = '$player'
-							");
-							list($av_ping, $av_latency) = $db->fetch_row();
-							if ($av_ping)
-								echo $av_ping." ms (Latency: $av_latency ms)";
-							else
-								echo '-';
-						?>
-					</td>
-				</tr>
-				<tr class="bg1">
 					<td>Favorite Server:*</td>
 					<td>
 						<?php
@@ -290,7 +250,7 @@ For support and installation notes visit http://www.hlxcommunity.com
 						?>
 					</td>
 				</tr>
-				<tr class="bg2">
+				<tr class="bg1">
 					<td>Favorite Map:*</td>
 					<td>
 						<?php
@@ -315,7 +275,7 @@ For support and installation notes visit http://www.hlxcommunity.com
 						?>
 					</td>
 				</tr>
-				<tr class="bg1">
+				<tr class="bg2">
 					<td>Favorite Weapon:*</td>
 						<?php
 							$result = $db->query("
@@ -490,43 +450,6 @@ For support and installation notes visit http://www.hlxcommunity.com
 					</td>
 				</tr>
 				<tr class="bg1">
-					<td style="width:45%;">Shots per Kill:</td>
-					<td style="width:55%;" colspan="2">
-						<?php
-							$db->query
-							("
-								SELECT
-									IFNULL(ROUND((SUM(hlstats_Events_Statsme.hits) / SUM(hlstats_Events_Statsme.shots) * 100), 2), 0.0) AS accuracy,
-									SUM(hlstats_Events_Statsme.shots) AS shots,
-									SUM(hlstats_Events_Statsme.hits) AS hits,
-									SUM(hlstats_Events_Statsme.kills) AS kills
-								FROM
-									hlstats_Events_Statsme
-								WHERE
-									hlstats_Events_Statsme.playerId='$player'
-							");
-							list($playerdata['accuracy'], $sm_shots, $sm_hits, $sm_kills) = $db->fetch_row();
-							if ($sm_kills > 0)
-							{
-								echo sprintf('%.2f', ($sm_shots / $sm_kills));
-							}
-							else
-							{
-								echo '-';
-							}
-						?>
-					</td>
-				</tr>
-				<tr class="bg2">
-					<td style="width:45%;">Weapon Accuracy:</td>
-					<td style="width:55%;" colspan="2">
-						<?php
-							echo $playerdata['acc'] . '%';
-							echo " (".sprintf('%.0f', $playerdata['accuracy']).'%*)';
-						?>
-					</td>
-				</tr>
-				<tr class="bg1">
 					<td style="width:45%;">Headshots:</td>
 					<td style="width:55%;" colspan="2">
 						<?php
@@ -592,21 +515,6 @@ For support and installation notes visit http://www.hlxcommunity.com
 						?>
 					</td>
 				</tr>
-				<tr class="bg2">
-					<td style="width:45%;">Suicides:</td>
-					<td style="width:55%;" colspan="2">
-						<?php echo number_format($playerdata['suicides']); ?>
-					</td>
-				</tr>
-				<tr class="bg1">
-					<td style="width:45%;">Teammate Kills:</td>
-					<td style="width:55%;" colspan="2">
-						<?php
-							echo number_format($playerdata['teamkills']);
-							echo ' ('.number_format($realteamkills).'*)';
-						?>
-					</td>
-				</tr>
 			</table><br />
 			<?php
 				echo '&nbsp;&nbsp;<img src="' . IMAGE_PATH . '/history.gif" style="padding-left:3px;padding-right:3px;" alt="History" />&nbsp;<b>'
@@ -643,7 +551,7 @@ For support and installation notes visit http://www.hlxcommunity.com
 				</tr>
 				<tr class="bg1">
 					<td style="text-align:center;">
-						<?php echo "<img src=\"trend_graph.php?bgcolor=".$g_options['graphbg_trend'].'&amp;color='.$g_options['graphtxt_trend']."&amp;player=$player\" alt=\"Player Trend Graph\" />"; ?>
+						<?php echo "<img src=\"trend_graph.php?bgcolor=".$g_options['graphbg_trend'].'&amp;color='.$g_options['graphtxt_trend']."&amp;player=$player\" alt=\"Player Trend Graph\" style=\"background-color: white\" />"; ?>
 					</td>
 				</tr>
 			</table>

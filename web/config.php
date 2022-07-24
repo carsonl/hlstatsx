@@ -42,7 +42,7 @@ if ( !defined('IN_HLSTATS') ) { die('Do not access this file directly'); }
 //           (You might also try setting this to e.g. ":/tmp/mysql.sock" to
 //           use a Unix domain socket, if your mysqld is on the same box as
 //           your web server.)
-define("DB_ADDR", "localhost");
+define("DB_ADDR", "");
 
 // DB_USER - The username to connect to the database as
 define("DB_USER", "");

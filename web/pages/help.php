@@ -298,27 +298,27 @@ For support and installation notes visit http://www.hlxcommunity.com
 			?><br /><br />
 			<h1 class="fTitle" style="padding-top:10px;"><a name="set">4. How can I set my real name, e-mail address, and homepage?</a></h1><br /><br />
 			Player profile options can be configured by saying the appropriate <strong>HLX_SET</strong> command while you are playing on a participating game server. To say commands, push your chat key and type the command text.<br /><br />
-			Syntax: say <strong>/hlx_set option value</strong>.<br /><br />
+			Syntax: say <strong>hlx_set option value</strong>.<br /><br />
 			Acceptable "options" are:
 			<ul>
 				<li><strong>realname</strong><br />
 					Sets your Real Name as shown in your profile.<br />
-					Example: &nbsp; <strong>/hlx_set realname Joe Bloggs</strong><br /><br />
+					Example: &nbsp; <strong>hlx_set realname Joe Bloggs</strong><br /><br />
 				</li>
 			
 				<li><strong>email</strong><br />
 					Sets your E-mail Address as shown in your profile.<br />
-					Example: &nbsp; <strong>/hlx_set email joe@joebloggs.com</strong><br /><br />
+					Example: &nbsp; <strong>hlx_set email joe@joebloggs.com</strong><br /><br />
 				</li>
 				
 				<li><strong>homepage</strong><br />
 					Sets your Home Page as shown in your profile.<br />
-					Example: &nbsp; <strong>/hlx_set homepage http://www.joebloggs.com/</strong><br /><br />
+					Example: &nbsp; <strong>hlx_set homepage http://www.joebloggs.com/</strong><br /><br />
 				</li>
 			</ul>
 			<strong>Note:</strong> These are not standard Half-Life console commands. If you type them in the console, Half-Life will give you an error.<br /><br />For a full list of supported ingame commands, type the word help into ingame chat.<br /><br />
 			<h1 class="fTitle" style="padding-top:10px;"><a name="hideranking">5. My rank is embarrassing. How can I opt out?</a></h1><br /><br />
-			Say <b>/hlx_hideranking</b> while playing on a participating game server. This will toggle you between being visible on the Player Rankings and being invisible.<br /><br />
+			Say <b>hlx_hideranking</b> while playing on a participating game server. This will toggle you between being visible on the Player Rankings and being invisible.<br /><br />
 			<strong>Note:</strong> You will still be tracked and you can still view your Player Details page. Use the <a href="<?php echo $g_options['scripturl']; ?>?mode=search">Search</a> page to find yourself.
 	</div>
 </div>

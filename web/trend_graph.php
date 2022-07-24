@@ -101,12 +101,12 @@
 	$Chart = new pChart(400, 200);
 	$Chart->drawBackground($bg_color['red'], $bg_color['green'], $bg_color['blue']);
 	
-	$Chart->setGraphArea(40, 28, 339, 174);
+	$Chart->setGraphArea(70, 28, 339, 174);
 	$Chart->drawGraphAreaGradient(40, 40, 40, -50);
 	
 	if (count($date) < 2)
 	{
-		$Chart->setFontProperties(IMAGE_PATH . '/sig/font/DejaVuSans.ttf', 11);
+		$Chart->setFontProperties(IMAGE_PATH . '/sig/font/RobotoCondensed-Bold.ttf', 11);
 		$Chart->drawTextBox(100, 90, 180, 110, "Not Enough Session Data", 0, 0, 0, 0, ALIGN_LEFT, FALSE, 255, 255, 255, 0);
 	}
 	else
@@ -120,7 +120,7 @@
 		$DataSet->SetSerieName('Skill', 'SerieSkill');
 		$DataSet->SetSerieName('Session', 'SerieSession');
 
-		$Chart->setFontProperties(IMAGE_PATH . '/sig/font/DejaVuSans.ttf', 7);
+		$Chart->setFontProperties(IMAGE_PATH . '/sig/font/RobotoCondensed-Bold.ttf', 8);
 		$DataSet->SetYAxisName('Skill');
 		$DataSet->SetYAxisUnit('K');
 		$Chart->setColorPalette(0, 255, 255, 0);
@@ -148,7 +148,7 @@
 		$Chart->clearShadow();
 		$Chart->drawPlotGraph($DataSet->GetData(), $DataSet->GetDataDescription(), 1, 1, 255, 255, 255);
 		
-		$Chart->setFontProperties(IMAGE_PATH . '/sig/font/DejaVuSans.ttf',7);
+		$Chart->setFontProperties(IMAGE_PATH . '/sig/font/RobotoCondensed-Bold.ttf', 8);
 		$Chart->drawHorizontalLegend(235, -1, $DataSet->GetDataDescription(),
 			0, 0, 0, 0, 0, 0, $color['red'], $color['green'], $color['blue'], FALSE);
 	}
