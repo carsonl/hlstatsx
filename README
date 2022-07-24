@@ -1,3 +1,68 @@
+A merging of the following repositories:
+* https://github.com/samdisk11/HLStatsX-CE2
+* https://github.com/brysondev/hlstatsx-revamped
+
+There are still some things broken:
+* Admin page doesn't work, refer to `Docker/SQL-hacks.txt` for some manual bits to do
+* Links to player pages are not always present when they should be (The awards page seems to be the best way to find them)
+* Fully qualified links sometimes send you to the wrong place, depending on how you setup the end-point URL for accessing the site
+* Probably many more
+
+
+Under `Docker/` there is a Dockerfile, configuration files, and scripts to get things running
+Under `Docker/maintenance/` there are some more helpful scripts to maintain the setup
+  I set all of this workflow up well before I knew about docker-compose/Swarm, and wanted more control
+  I just haven't really bothered using anything else, as it fit my needs
+
+The variety of scripts here are usually self-evident on how to run them, sometimes they'll need the "instance" name as the first parameter... I should document this properly one day.
+The scripts also support a variety of hacky features used by some containers, some of which are not these.
+The Dockerfile assumes an apt-cacher setup running on the host, remove the lines as appropriate.
+The scripts also assume `gadjet` as the docker registry user, that is me, probably change it, but in theory as it is all handled outside of a registry, it shouldn't actually cause any harm.
+You will need your own mariadb server to use
+Create an `env.list` file under `Docker/` containing the DB details:
+```
+DB_ADDR=172.17.0.1 #  Probably
+DB_NAME=hlstatsx #  Probably
+DB_USER=<username>
+DB_PASS=<password>
+```
+
+In theory (mostly un-tested), you should be able to:
+(These are used by my broader Docker setup that symlink to generic scripts under /var/scripts/docker/scripts/default/, except when {build,check}-extra.sh are actually required)
+  ./build-extra.sh	Perform extra build steps if required
+  ./build.sh		To build the docker image
+  ./check-extra.sh	Perform extra check steps if required
+  ./check.sh		Check whether the containers are running
+  ./debug.sh		Enter one of the containers for debugging
+  ./kill.sh		As expected (forceful)
+  ./logs.sh		Tail logs
+  ./print-*.sh		Print out the launch parameters for a container, used by run/etc.
+  ./rebuild.sh		Kill existing containers, remove old image(s) and build a new one
+  ./restart.sh		As expected
+  ./rm.sh		Stop, kill, then delete existing containers
+  ./run.sh		To build the run the containers (4 of them, based on the `print*` files)
+  ./stop.sh		As expected (graceful)
+
+In theory (mostly un-tested), you should be able to:
+(Probably required to live under /var/scripts/docker/scripts/maintenance - These are used by my broader Docker setup)
+  maintenance/build-all.sh	Build all the containers
+  maintenance/check-all.sh	Check all the containers (and restart)
+  maintenance/clean-all.sh	Clean up a bunch of stuff
+  maintenance/restart-all.sh	Restart everything
+  maintenance/stop-all.sh	Stop everything
+
+Cronjob to check things are running:
+`* * * * * root   timeout 2m flock -n /var/scripts/docker/scripts/maintenance/check-all.sh -c '/var/scripts/docker/scripts/maintenance/check-all.sh 2>&1`
+
+
+
+
+#Note for me to sync my private stuff to this repository: `rsync -avcL --delete /var/scripts/docker/app_hlstatsx/ /mnt/mounts/Backups/GitHub/hlstatsx/Docker/ --exclude /maintenance/; rsync -avL --delete /var/scripts/docker/scripts/maintenance/ /mnt/mounts/Backups/GitHub/hlstatsx/Docker/maintenance --exclude /interactive-debug.sh`
+
+
+
+
+
 ===========================================================
 HLstatsX Community Edition
 http://www.hlxce.com

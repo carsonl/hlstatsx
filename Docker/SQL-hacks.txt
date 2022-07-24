@@ -1,0 +1,25 @@
+Update the following in `hlstats_Options`:
+  AllowOnlyConfigServers	0
+  DeleteDays			99999999
+  LogChatAdmins			1
+  PlayerMinKills		1
+  UseGeoIPBinary		0
+  bannerdisplay			''
+  countrydata			0
+  gamehome_show_awards		1
+  show_google_map		0
+  show_server_load_image	0
+  siteurl			''
+
+
+Update the following in `hlstats_Servers_Config_Default`:
+  Admins			<Comma separated steamIDs, e.g. STEAM_0:0:12345678>
+  IgnoreBots			0
+  HLStatsURL			''
+  MinPlayers			1
+  UpdateHostname		0
+
+
+Just run something like this to insert the server(s) you want:
+INSERT INTO `hlstats_Servers` VALUES
+(1,'172.17.0.3',27016,'CS:GO Server',0,'csgo','no.thank.you',NULL,'<RCON_PASSWORD',64,20,0,0,21,0,0,0,0,1,30,'workshop/125436057/cs_italy',0,0,0,1656025788,4,0,0,0,0,0,0,0,0,NULL,NULL,'','',1656025787);
