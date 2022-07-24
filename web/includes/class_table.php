@@ -168,7 +168,6 @@ class Table
 <?php
 		if ($totalwidth != 100)
 		{
-			error("Warning: Column widths do not add to 100%! (=$totalwidth%)", false);
 		}
 
 		$rank = ($this->page - 1) * $this->numperpage + 1;
@@ -217,7 +216,6 @@ class Table
 <?php
 		if ($totalwidth != 100)
 		{
-			error("Warning: Column widths do not add to 100%! (=$totalwidth%)", false);
 		}
 
 		$rank = ($this->page - 1) * $this->numperpage + 1;
@@ -553,13 +551,13 @@ class TableColumn
 			'heatmap'
 		);
 
-		parse_str($attrs);
+		parse_str($attrs,$provided_attrs);
 
 		foreach ($allowed_attrs as $a)
 		{
-			if (isset($$a))
+			if (isset($provided_attrs[$a]))
 			{
-				$this->$a = mystripslashes($$a);
+				$this->$a = mystripslashes($provided_attrs[$a]);
 			}
 		}
 		$this->fname = $fname;

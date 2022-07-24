@@ -155,7 +155,7 @@ else
 	$_SESSION['game'] = $game;
 }
 
-if (!$realgame && $game)
+if (!isset($realgame) && $game)
 {
 	$realgame = getRealGame($game);
 	$_SESSION['realgame'] = $realgame;

@@ -80,17 +80,16 @@ class DB_mysql
 
 		if ( $use_pconnect )
 		{
-			$this->link = @mysqli_pconnect($db_addr, $db_user, $db_pass);
+			$this->link = @mysqli_pconnect($db_addr, $db_user, $db_pass, $db_name);
 		}
 		else
 		{
-			$this->link = @mysqli_connect($db_addr, $db_user, $db_pass);
+			$this->link = @mysqli_connect($db_addr, $db_user, $db_pass, $db_name);
 		}
 
 		if ( $this->link )
 		{
 			$q = @mysqli_query($this->link, "SET NAMES 'utf8mb4'");
-			@mysqli_free_result($q);
 
 			if ( $db_name != '' )
 			{

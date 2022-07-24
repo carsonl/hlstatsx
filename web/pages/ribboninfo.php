@@ -187,7 +187,7 @@ For support and installation notes visit http://www.hlxcommunity.com
 		HAVING
 			COUNT(hlstats_Awards.name) >= $awardmin  	
 	");
-	$numitems = mysql_num_rows($resultCount);
+	$numitems = mysqli_num_rows($resultCount);
 
 ?>
 
