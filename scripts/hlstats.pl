@@ -1622,7 +1622,7 @@ sub readDatabaseConfig()
 	while (my($addr, $server) = each(%g_config_servers)) {
 		
 		if (!defined($g_config_servers{$addr}{"MinPlayers"})) {
-			$g_config_servers{$addr}{"MinPlayers"}						= 6;
+			$g_config_servers{$addr}{"MinPlayers"}						= 1;
 		}  
 		if (!defined($g_config_servers{$addr}{"DisplayResultsInBrowser"})) {
 			$g_config_servers{$addr}{"DisplayResultsInBrowser"}			= 0;
@@ -1676,7 +1676,7 @@ sub readDatabaseConfig()
 			$g_config_servers{$addr}{"SwitchAdmins"}					= 0;
 		}
 		if (!defined($g_config_servers{$addr}{"IgnoreBots"})) {
-			$g_config_servers{$addr}{"IgnoreBots"}						= 1;
+			$g_config_servers{$addr}{"IgnoreBots"}						= 0;
 		}
 		if (!defined($g_config_servers{$addr}{"SkillMode"})) {
 			$g_config_servers{$addr}{"SkillMode"}						= 0;
@@ -2110,7 +2110,7 @@ while ($loop = &getLine()) {
 				next;
 			} elsif (!defined($g_config_servers{$s_addr})) { # create std cfg.
 				my %std_cfg;
-				$std_cfg{"MinPlayers"}						= 6;
+				$std_cfg{"MinPlayers"}						= 1;
 				$std_cfg{"HLStatsURL"}						= "";
 				$std_cfg{"DisplayResultsInBrowser"}			= 0;
 				$std_cfg{"BroadCastEvents"}					= 0;
@@ -2132,7 +2132,7 @@ while ($loop = &getLine()) {
 				$std_cfg{"EnablePublicCommands"}			= 1;
 				$std_cfg{"Admins"}							= "";
 				$std_cfg{"SwitchAdmins"}					= 0;
-				$std_cfg{"IgnoreBots"}						= 1;
+				$std_cfg{"IgnoreBots"}						= 0;
 				$std_cfg{"SkillMode"}						= 0;
 				$std_cfg{"GameType"}						= 0;
 				$std_cfg{"Mod"}								= "";
